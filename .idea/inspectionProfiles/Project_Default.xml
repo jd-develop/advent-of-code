@@ -1,0 +1,52 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyBroadExceptionInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E402" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N802" />
+          <option value="N813" />
+        </list>
+      </option>
+      <option name="ignoredBaseClasses">
+        <list>
+          <option value="unittest.TestCase" />
+          <option value="unittest.case.TestCase" />
+          <option value="interpreter.Interpreter" />
+          <option value="nougaro.Interpreter" />
+          <option value="src.nougaro.Interpreter" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyTypeCheckerInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="pygame.sprite.Sprite.exploding" />
+          <option value="pygame.sprite.Sprite.interact" />
+          <option value="pygame.sprite.Sprite.message_render" />
+          <option value="pygame.sprite.Sprite.return_x" />
+          <option value="pygame.sprite.Sprite.return_y" />
+          <option value="pygame.sprite.Sprite.draw" />
+          <option value="pygame.sprite.Sprite.update_health_bar" />
+          <option value="pygame.sprite.Sprite.forward" />
+          <option value="pygame.sprite.Sprite.apply_gravity" />
+          <option value="pygame.sprite.Sprite.feet" />
+          <option value="pygame.sprite.Sprite.move_back" />
+          <option value="list.get" />
+          <option value="src.player.Entity.dialog" />
+          <option value="src.entity.Entity.dialog" />
+          <option value="src.nougaro.List.__getitem__" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
