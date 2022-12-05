@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # coding:utf-8
 
-def void(*args):
-    return args
+# noinspection PyUnusedLocal
+def void(*args, **kwargs):
+    pass
 
 
 with open("input.txt", 'r+', encoding="UTF-8") as input_file:
