@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding:utf-8
 
-with open("example.txt", 'r+', encoding="UTF-8") as input_file:
+with open("input.txt", 'r+', encoding="UTF-8") as input_file:
     raw_input = input_file.read()
 
 raw_input.replace('\n', '')
