@@ -1,0 +1,66 @@
+/* works but VERY SLOW – I’ll continue in Python and I’ll retry AOC in Nougaro
+ * when it will be optimised
+ */
+import math
+
+def open()(input_f="input")
+    # open the input
+    read input_f >> input
+    return split(input, "\n")
+end
+
+var input = open()  # "example1.input")
+
+# print(input)
+
+def parse(input)
+    # parse the input into lists
+    var first_list = []
+    var second_list = []
+
+    for i in input then
+        if i == "" then continue
+        var i = split(i)(0, -1)
+        append(first_list, int(i(0)))
+        append(second_list, int(i(1)))
+    end
+
+    return [first_list, second_list]
+end
+
+def solve_puzzle_1(list1, list2)
+    # solves puzzle number 1
+    var diff_list = []
+
+    while len(list1) != 0 then
+        var min_list1 = min(list1)
+        var min_list2 = min(list2)
+
+        # TODO implement index() function
+        for i = 0 to len(list1) then
+            if min_list1 == list1(i) then
+                var idx1 = i
+                break
+            end
+        end
+        for i = 0 to len(list2) then
+            if min_list2 == list2(i) then
+                var idx2 = i
+                break
+            end
+        end
+
+        pop(list1, idx1)
+        pop(list2, idx2)
+
+        append(diff_list, math.abs(min_list1-min_list2))
+    end
+
+    # TODO implement sum() function
+    var sum = 0
+    for e in diff_list then var sum += e
+    return sum
+end
+
+print(solve_puzzle_1(*parse(input)))
+
