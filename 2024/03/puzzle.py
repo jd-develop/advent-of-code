@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
+import re
 
 def open_input(input_f: str = "input") -> str:
     """Open the input and return the list of lines (without newlines)"""
@@ -13,53 +14,23 @@ def parse(puzzle_input: str) -> tuple[list[tuple[int, int]], list[tuple[int, int
     result1: list[tuple[int, int]] = []
     result2: list[tuple[int, int]] = []
 
-    current = ""
     do_the_next_one = True
 
-    # that’s what happen when you’re too lazy to think to better solutions
-    for char in puzzle_input:
-        if char == "m":
-            current = "m"
-        elif char == "u" and current == "m":
-            current += "u"
-        elif char == "l" and current == "mu":
-            current += "l"
-        elif char == "(" and current == "mul":
-            current += "("
-        elif char in "1234567890" and current.startswith("mul("):
-            current += char
-        elif char == "," and current.startswith("mul(") and "," not in current:
-            current += char
-        elif char == ")" and current.startswith("mul(") and "," in current:
-            current = current[4:].split(",")
-            try:
-                if do_the_next_one:
-                    result2.append((
-                        int(current[0]), int(current[1])
-                    ))
-                result1.append((
-                    int(current[0]), int(current[1])
-                ))
-            except Exception:
-                pass
-            current = ""
-        elif char == "d":
-            current = "d"
-        elif char == "o" and current == "d":
-            current += "o"
-        elif char == "n" and current == "do":
-            current += "n"
-        elif char == "'" and current == "don":
-            current += "'"
-        elif char == "t" and current == "don'":
-            current += "t"
-        elif char == "(" and current in ["do", "don't"]:
-            current += "("
-        elif char == ")" and current in ["do(", "don't("]:
-            do_the_next_one = current == "do("
-            current = ""
+    x = re.findall("mul\\([0-9]+,[0-9]+\\)|do\\(\\)|don\'t\\(\\)", puzzle_input)
+    for y in x:
+        if y == "do()":
+            do_the_next_one = True
+        elif y == "don't()":
+            do_the_next_one = False
         else:
-            current = ""
+            int1, int2 = tuple(map(int, y[4:][:-1].split(",")))
+            if do_the_next_one:
+                result2.append((
+                    int(int1), int(int2)
+                ))
+            result1.append((
+                int(int1), int(int2)
+            ))
 
     return result1, result2
 
