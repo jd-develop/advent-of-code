@@ -27,14 +27,13 @@ def parse(puzzle_input: list[str]) -> tuple[list[int], list[int]]:
 def solve_puzzle_1(list1: list[int], list2: list[int]) -> int:
     """Solves puzzle 1"""
     diff_list: list[int] = []
+    list1.sort()
+    list2.sort()
 
     while len(list1) != 0:
-        min_list1 = min(list1)
-        min_list2 = min(list2)
-        list1.pop(list1.index(min_list1))
-        list2.pop(list2.index(min_list2))
-
-        diff_list.append(abs(min_list1-min_list2))
+        diff_list.append(
+            abs(list1.pop(0)-list2.pop(0))
+        )
 
     return sum(diff_list)
 
