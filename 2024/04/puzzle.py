@@ -44,22 +44,19 @@ def solve_puzzle_1(grid: list[str]) -> int:
 
 def solve_puzzle_2(grid: list[str]) -> int:
     """Solves puzzle 2"""
+    def condition_word_1(x: int, y: int) -> bool:
+        return (grid[x][y] == "M" and grid[x+2][y+2] == "S") or \
+            (grid[x][y] == "S" and grid[x+2][y+2] == "M")
+
+    def condition_word_2(x: int, y: int) -> bool:
+        return (grid[x+2][y] == "M" and grid[x][y+2] == "S") or \
+            (grid[x+2][y] == "S" and grid[x][y+2] == "M")
+
     total_occurences = 0
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            try:
-                if (
-                    ((grid[i][j] == "M" and grid[i+2][j+2] == "S")
-                     or (grid[i][j] == "S" and grid[i+2][j+2] == "M"))
-                    and
-                    ((grid[i+2][j] == "M" and grid[i][j+2] == "S")
-                     or (grid[i+2][j] == "S" and grid[i][j+2] == "M"))
-                    and
-                    grid[i+1][j+1] == "A"
-                ):
-                    total_occurences += 1
-            except Exception:
-                pass
+    for i in range(len(grid)-2):
+        for j in range(len(grid[0])-2):
+            if grid[i+1][j+1] == "A" and condition_word_1(i, j) and condition_word_2(i, j):
+                total_occurences += 1
     return total_occurences
 
 puzzle_input = open_input()
