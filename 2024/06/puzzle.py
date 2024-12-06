@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-from pprint import pprint
 
 def open_input(input_f: str = "input") -> list[str]:
     """Open the input and return the list of lines (without newlines)"""
