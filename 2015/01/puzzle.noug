@@ -1,0 +1,17 @@
+
+read "input" >> puzzle_input
+
+var floor = 0
+var first_pos_basement = 0
+var i = 1
+
+for c in puzzle_input then
+    if c == "(" then var floor++ \
+    elif c == ")" then var floor--
+    if floor < 0 and first_pos_basement == 0 then var first_pos_basement = i
+    var i++
+end
+
+print(floor)
+print(first_pos_basement)
+
