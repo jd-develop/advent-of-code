@@ -76,12 +76,12 @@ def solve_puzzle2(antennas: list[list[str]]) -> int:
                 diffl = l2-l
                 diffc = c2-c
                 negativel, negativec = l, c
-                while (negativel >= 0 and negativel < n and negativec >= 0 and negativec < n):
+                while (negativel >= 0 and negativel < n and negativec >= 0 and negativec < m):
                     antinodes_location.add((negativel, negativec))
                     negativel -= diffl
                     negativec -= diffc
                 positivel, positivec = l, c
-                while (positivel >= 0 and positivel < n and positivec >= 0 and positivec < n):
+                while (positivel >= 0 and positivel < n and positivec >= 0 and positivec < m):
                     antinodes_location.add((positivel, positivec))
                     positivel += diffl
                     positivec += diffc
