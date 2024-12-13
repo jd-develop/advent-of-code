@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-import math
+# type: ignore
 import sympy
 
 
@@ -33,18 +33,18 @@ def parse(puzzle_input: str) -> list[tuple[(int, int, int, int, int, int)]]:  # 
     return res
 
 
-def solve_puzzle1(machines: list[tuple[(int, int, int, int, int, int)]]) -> int:
+def solve_puzzle1(machines: list[tuple[(int, int, int, int, int, int)]], part2: bool = False) -> int:
     """Solves puzzle 1."""
     total = 0
     for a_x, a_y, b_x, b_y, p_x, p_y in machines:
         x, y = sympy.symbols("x, y", integers=True)
-        solutions: set[tuple[sympy.Add, sympy.Add]] = sympy.solvers.diophantine(a_x*x + b_x*y - p_x)
+        solutions: set[tuple[sympy.Add, sympy.Add]] = sympy.solvers.diophantine(a_x*x + b_x*y - p_x - 10000000000000*part2)
 
         #print(solutions)
         if len(solutions) == 0:
             continue
         add_1, add_2 = solutions.pop()
-        both_solutions = sympy.solvers.solve(add_1*a_y + add_2*b_y - p_y)
+        both_solutions = sympy.solvers.solve(add_1*a_y + add_2*b_y - p_y - 10000000000000*part2)
         if len(both_solutions) == 0:
             continue
 
@@ -53,12 +53,10 @@ def solve_puzzle1(machines: list[tuple[(int, int, int, int, int, int)]]) -> int:
         if isinstance(add_1, sympy.core.symbol.Symbol):
             pa = 0
             qa = 1
-            t0 = add_1
         else:
             pa = int(add_1.args[0])
             if isinstance(add_1.args[1], sympy.core.symbol.Symbol):
                 qa = 1
-                t0 = add_1.args[1]
             else:
                 qa = int(add_1.args[1].args[0])
                 t0 = add_1.args[1].args[1]
@@ -79,35 +77,20 @@ def solve_puzzle1(machines: list[tuple[(int, int, int, int, int, int)]]) -> int:
             if times_a < 0: continue
             if times_b < 0: continue
 
-            assert times_a*a_x + times_b*b_x == p_x
-            assert times_a*a_y + times_b*b_y == p_y
+            assert times_a*a_x + times_b*b_x == p_x + 10000000000000*part2
+            assert times_a*a_y + times_b*b_y == p_y + 10000000000000*part2
 
             cost = times_a*3 + times_b
             if cost < minimum or minimum == -1:
                minimum = cost
 
-        minimum_working = -1
-        for i in range(100):
-            for j in range(100):
-                if i*a_x + j*b_x != p_x: continue
-                if i*a_y + j*b_y != p_y: continue
-                cost = i*3 + j
-                if cost < minimum_working or minimum_working == -1:
-                   minimum_working = cost
-
-        if minimum != minimum_working:
-            print(minimum, minimum_working, both_solutions, pa+both_solutions[0]*qa, pb+both_solutions[0]*qb, pa, qa, pb, qb)
-
         total += minimum if minimum != -1 else 0
 
     return total
-
-#def solve_puzzle2() -> int:
-#    """Solves puzzle 2."""
 
 
 puzzle_input = open_input()
 parsed_input = parse(puzzle_input)
 print(solve_puzzle1(parsed_input))
-#print(solve_puzzle2(parsed_input))
+print(solve_puzzle1(parsed_input, True))
 
