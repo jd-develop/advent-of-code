@@ -59,7 +59,6 @@ def solve_puzzle1(machines: list[tuple[(int, int, int, int, int, int)]], part2: 
                 qa = 1
             else:
                 qa = int(add_1.args[1].args[0])
-                t0 = add_1.args[1].args[1]
         if isinstance(add_2, sympy.core.symbol.Symbol):
             pb = 0
             qb = 1

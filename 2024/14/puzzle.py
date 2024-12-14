@@ -22,20 +22,6 @@ def parse(puzzle_input: str) -> list[tuple[int, int, int, int]]:
 
 
 def print_grid(bounds: tuple[int, int], new_positions: list[tuple[int, int]], seconds: int):
-    #founds_lines: list[int] = []
-    #for j in range(bounds[1]):
-    #    found_in_a_row = 0
-    #    last_row = -1
-    #    for i in range(bounds[0]):
-    #        if (i, j) not in new_positions: continue
-    #        if last_row+1 == i:
-    #            last_row += 1
-    #            found_in_a_row += 1
-    #        else:
-    #            found_in_a_row = 0
-    #    founds_lines.append(found_in_a_row)
-    #if max(founds_lines) <= 5:
-    #    return
     if len(set(new_positions)) < len(new_positions):
         return False
 
@@ -91,9 +77,6 @@ def solve_puzzle1(robots: list[tuple[int, int, int, int]],
     return quadrant_1*quadrant_2*quadrant_3*quadrant_4
 
 
-#def solve_puzzle2(files: list[tuple[int, int]]) -> int:
-#    """Solves puzzle 2."""
-
 
 puzzle_input = open_input()
 parsed_input = parse(puzzle_input)
@@ -102,5 +85,4 @@ print(solve_puzzle1(parsed_input))
 for s in range(10000):
     if solve_puzzle1(parsed_input, seconds=s, verbose=True):
         break
-#print(solve_puzzle2(parsed_input))
 
