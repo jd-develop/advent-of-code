@@ -54,26 +54,21 @@ def solve_puzzle1(robots: list[tuple[int, int, int, int]],
 
     quadrants_x = bounds[0] // 2
     quadrants_y = bounds[1] // 2
-
     quadrant_1 = 0
-    for i in range(quadrants_x):
-        for j in range(quadrants_y):
-            quadrant_1 += new_positions.count((i, j))
-
     quadrant_2 = 0
-    for i in range(bounds[0] - quadrants_x, bounds[0]):
-        for j in range(quadrants_y):
-            quadrant_2 += new_positions.count((i, j))
-
     quadrant_3 = 0
-    for i in range(quadrants_x):
-        for j in range(bounds[1] - quadrants_y, bounds[1]):
-            quadrant_3 += new_positions.count((i, j))
-
     quadrant_4 = 0
-    for i in range(bounds[0] - quadrants_x, bounds[0]):
-        for j in range(bounds[1] - quadrants_y, bounds[1]):
-            quadrant_4 += new_positions.count((i, j))
+    for i, j in new_positions:
+        if i < quadrants_x:
+            if j < quadrants_y:
+                quadrant_1 += 1
+            elif j >= bounds[1] - quadrants_y:
+                quadrant_2 += 1
+        elif i >= bounds[0] - quadrants_x:
+            if j < quadrants_y:
+                quadrant_3 += 1
+            elif j >= bounds[1] - quadrants_y:
+                quadrant_4 += 1
 
     # print(quadrant_1, quadrant_2, quadrant_3, quadrant_4)
     return quadrant_1*quadrant_2*quadrant_3*quadrant_4
@@ -84,7 +79,17 @@ puzzle_input = open_input()
 parsed_input = parse(puzzle_input)
 
 print(solve_puzzle1(parsed_input))
-for s in range(10000):
+safety_factors: list[int] = []
+for s in range(101*103):
+    safety_factors.append(solve_puzzle1(parsed_input, seconds=s))
+
+print(safety_factors.index(min(safety_factors)))
+
+for s in range(101*103):
     if solve_puzzle1(parsed_input, seconds=s, verbose=True):
         break
+
+# from matplotlib import pyplot as plt
+# plt.plot(range(101*103), safety_factors, "-")  # type: ignore
+# plt.show()  # type: ignore
 
