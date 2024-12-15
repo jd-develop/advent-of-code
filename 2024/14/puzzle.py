@@ -28,8 +28,10 @@ def print_grid(bounds: tuple[int, int], new_positions: list[tuple[int, int]], se
     print(seconds)
     for j in range(bounds[1]):
         for i in range(bounds[0]):
-            count = new_positions.count((i, j))
-            print("#" if count != 0 else ".", end="")
+            if ((i, j)) in new_positions:
+                print("#", end="")
+            else:
+                print(".", end="")
         print()
     return True
 
