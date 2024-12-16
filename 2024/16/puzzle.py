@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
+import functools
+
 
 def open_input(input_f: str = "input") -> str:
     """Open the input and return the list of lines (without newlines)"""
@@ -88,13 +90,48 @@ puzzle_input = open_input()
 parsed_maze, start_pos, end_pos = parse(puzzle_input)
 
 
+# unoptimised
+@functools.cache
 def solve_puzzle2(start_pos: tuple[int, int], end_pos: tuple[int, int], facing: str,
                   forward_moves_left: int, turns_left: int) -> set[tuple[int, int]]:
     """Solves puzzle 2 recursively."""
-    return set()
+    if start_pos == end_pos:
+        return {start_pos}
+    if forward_moves_left == 0:
+        return set()
+    i, j = start_pos
+    maze = parsed_maze
+    neighbours = [(i-1, j, "n"), (i+1, j, "s"), (i, j+1, "e"), (i, j-1, "w")]
+    maze_height = len(maze)
+    maze_width = len(maze[0])
+    total_visited_tiles: set[tuple[int, int]] = set()
+    for ni, nj, nf in neighbours:
+        if (facing, nf) in [("n", "s"), ("s", "n"), ("e", "w"), ("w", "e")]:
+            continue
+        if ni < 0 or nj < 0: continue
+        if ni >= maze_height: continue
+        if nj >= maze_width: continue
+        if maze[ni][nj] == 1: continue  # wall
+
+        new_forward_moves_left = forward_moves_left - 1
+        if (facing in "sn" and nf in "ew") or (facing in "ew" and nf in "ns"):
+            if turns_left == 0: continue
+            new_turns_left = turns_left - 1
+        else:
+            new_turns_left = turns_left
+
+        new_visited_tiles = solve_puzzle2(
+            (ni, nj), end_pos, nf, new_forward_moves_left, new_turns_left
+        )
+        if len(new_visited_tiles) == 0:
+            continue
+        total_visited_tiles = total_visited_tiles.union(new_visited_tiles)
+        total_visited_tiles.add((ni, nj))
+
+    return total_visited_tiles
 
 
 forward_moves, turns = solve_puzzle1(parsed_maze, start_pos, end_pos)
 print(forward_moves + 1000*turns)
-print(len(solve_puzzle2(start_pos, end_pos, "e", forward_moves, turns)))
+print(len(solve_puzzle2(start_pos, end_pos, "e", forward_moves, turns))+1)
 
