@@ -46,12 +46,11 @@ def combo(a: int, b: int, c: int, op: int) -> int:
     assert False, op
 
 
-def solve_puzzle1(a: int, b: int, c: int, instructions: list[int], debug: bool = False, p2: bool = False) -> list[int]:
+def solve_puzzle1(a: int, b: int, c: int, instructions: list[int], debug: bool = False) -> list[int]:
     """Solves puzzle 1"""
     instruction_ptr = 0
     n_op = len(instructions)
     stdout: list[int] = []
-    out_ctr = 0
 
     while instruction_ptr < n_op:
         opcode = instructions[instruction_ptr]
@@ -77,10 +76,7 @@ def solve_puzzle1(a: int, b: int, c: int, instructions: list[int], debug: bool =
         elif opcode == 5:  # OUT
             if debug: print(f"OUT {operand}")
             out = combo(a, b, c, operand)%8
-            if p2 and out != instructions[out_ctr]:
-                break
             stdout.append(out)
-            out_ctr += 1
         elif opcode == 6:  # BDV
             if debug: print(f"BDV {operand}")
             numerator = a
@@ -99,13 +95,26 @@ def solve_puzzle1(a: int, b: int, c: int, instructions: list[int], debug: bool =
     return stdout
 
 
-def solve_puzzle2(b: int, c: int, instructions: list[int], debug: bool = False) -> int:
+def solve_puzzle2(a: int, b: int, c: int, instructions: list[int], idx: int) -> int:
     """Solves puzzle 2"""
-    i = 0
-    while True:
-        if solve_puzzle1(i, b, c, instructions, debug) == instructions:
-            return i
-        i += 1
+    # SOOO, I observed that the program actually prints a digit, then removes
+    # 3 bits from a. So if we add 3 bits per 3 bits, because one iteration of
+    # the program only changes the last 3 bits, we’ll have a solution. We just
+    # have to check each possibility for the 3 bits, because maybe the solution
+    # doesn’t work for, say, 3 but works for 7
+    p1 = solve_puzzle1(a, b, c, instructions)
+    if p1 != instructions[idx:]:
+        return -1
+    if idx == 0:
+        return a
+
+    possibilities: list[int] = []
+    for j in range(8):
+        possibilities.append(solve_puzzle2(a*8+j, b, c, instructions, idx-1))
+    if all(i == -1 for i in possibilities):
+        return -1
+    possibilities = [p for p in possibilities if p != -1]
+    return min(possibilities)
 
 
 puzzle_input = open_input()
@@ -119,5 +128,11 @@ for i, res in enumerate(stdout):
     else:
         print(res, end=",")
 
-print(solve_puzzle2(b, c, instructions))
+possibilities: list[int] = []
 
+for i in range(8):
+    p2 = solve_puzzle2(i, b, c, instructions, len(instructions)-1)
+    if p2 != -1:
+        possibilities.append(p2)
+
+print(min(possibilities))
