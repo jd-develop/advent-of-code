@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 import itertools
-from pprint import pprint
 
 
 def open_input(input_f: str = "input") -> str:
