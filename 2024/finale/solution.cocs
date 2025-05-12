@@ -1,0 +1,57 @@
+Soit sort la fonction qui lorsqu'elle est appelée avec liste exécute:
+    Soit n La longueur de La variable liste??.
+    Pour i allant de L'entier zéro? jusqu'à La variable n? faire:
+        Soit j La variable i?.
+        Tant que La valeur de La variable j? est strictement plus grande que la valeur de L'entier zéro??:
+            Si La valeur de L'élément de La variable liste? à l'indice La variable j?? est plus grande que la valeur de L'élément de La variable liste? à l'indice La différence de La variable j? et de L'entier un???? alors:
+                Quitter la boucle.
+            .
+            Soit tj L'élément de La variable liste? à l'indice La variable j??.
+            Remplacer l'élément de La liste liste? à l'indice La variable j? par L'élément de La variable liste? à l'indice La différence de La variable j? et de L'entier un???.
+            Remplacer l'élément de La liste liste? à l'indice La différence de La variable j? et de L'entier un?? par La variable tj?.
+            Que La variable j? devienne La différence de La variable j? et de L'entier un??.
+        .
+    .
+    Renvoyer La liste liste?.
+.
+
+Soit n Une entrée entière?.
+Soit a La liste vide?.
+Pour i allant de L'entier zéro? jusqu'à La variable n? faire:
+    Ajouter à La liste a? Une entrée entière?.
+.
+Soit b La liste vide?.
+Pour i allant de L'entier zéro? jusqu'à La variable n? faire:
+    Ajouter à La liste b? Une entrée entière?.
+.
+
+(Partie un)
+Que La variable a? devienne Le résultat de la fonction sort avec les arguments La liste a??.
+Que La variable b? devienne Le résultat de la fonction sort avec les arguments La liste b??.
+(Afficher La variable a?.)
+(Afficher La variable b?.)
+
+Soit total L'entier zéro?.
+Pour i allant de L'entier zéro? jusqu'à La variable n? faire:
+    Soit diff La différence de L'élément de La variable a? à l'indice La variable i?? et de L'élément de La variable b? à l'indice La variable i???.
+    Si La valeur de La variable diff? est plus petite que la valeur de L'entier zéro?? alors:
+        Que La variable total? devienne La différence de La variable total? et de La variable diff??.
+    sinon:
+        Que La variable total? devienne La somme de La variable total? et de La variable diff??.
+    .
+.
+
+Soit total L'entier zéro?.
+
+(Partie deux)
+Pour i allant de L'entier zéro? jusqu'à La variable n? faire:
+    Soit ai L'élément de La variable a? à l'indice La variable i??.
+    Pour j allant de L'entier zéro? jusqu'à La variable n? faire:
+        Soit bj L'élément de La variable b? à l'indice La variable j??.
+        Si La valeur de La variable ai? est égale à la valeur de La variable bj?? alors:
+            Que La variable total? devienne La somme de La variable total? et de La variable ai??.
+        .
+    .
+.
+
+Afficher La variable total?.
