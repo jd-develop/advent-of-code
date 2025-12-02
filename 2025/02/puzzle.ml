@@ -72,7 +72,7 @@ let solve_part1 (input: (int * int) list) =
 
 
 let rec number_repeted_n_times (num: int) (n: int) : int =
-  if n = 0 then num
+  if n = 1 then num
   else string_of_int num ^ string_of_int (number_repeted_n_times num (n-1))
         |> int_of_string
 
@@ -88,15 +88,16 @@ let add_invalid_ids_part2 (acc: int) ((a, b) : int * int) : int =
       test_repeat_n (start+1) (accu + current) n (current::already_tested)
   in
 
-  let rec test_all_from_n (accu: int) (n: int) (already_tested: int list) =
+  let rec test_all_repeated_n_times (accu: int) (n: int)
+      (already_tested: int list) =
     if number_repeted_n_times 1 n > b then
       accu
     else
       let to_add, new_tested = test_repeat_n 1 0 n already_tested in
-      test_all_from_n (accu + to_add) (n+1) new_tested
+      test_all_repeated_n_times (accu + to_add) (n+1) new_tested
   in
 
-  acc + test_all_from_n 0 1 []
+  acc + test_all_repeated_n_times 0 2 []
 
 
 let solve_part2 (input: (int * int) list) =
