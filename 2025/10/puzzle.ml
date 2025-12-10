@@ -107,10 +107,56 @@ let rec (--) (l1: int list) (l2: int list) : int list =
 let ( ** ) a = List.map (fun x -> a*x)
 
 
+(* C’est parti pour faire du calcul formel *)
+type formula =
+  | Number of int
+  | Variable of int
+  | Opposite of formula
+  | Plus of formula * formula
+  | Times of formula * formula
+  | Minus of formula * formula
+
+
+let (+:) a b =
+  match a, b with
+  | Number a', Number b' -> Number (a'+b')
+  | a, b -> Plus (a, b)
+
+let (-:) a b =
+  match a, b with
+  | Number a', Number b' -> Number (a'-b')
+  | a, b -> Minus (a, b)
+
+let ( *: ) a b =
+  match a, b with
+  | Number a', Number b' -> Number (a'*b')
+  | a, b -> Times (a, b)
+
+
+let rec eval (f: formula) (v: int list) : int =
+  match f with
+  | Number(n) -> n
+  | Variable(i) -> List.nth v i
+  | Opposite(f') -> -(eval f' v)
+  | Plus(a, b) -> eval a v + eval b v
+  | Minus(a, b) -> eval a v - eval b v
+  | Times(a, b) -> eval a v * eval b v
+
+
+let rec ( **: ) (l1: int list) (l2: formula list) =
+  match l1, l2 with
+  | [], [] -> []
+  | x1::q1, x2::q2 -> (Number(x1) *: x2)::(q1 **: q2)
+  | _ -> raise (Invalid_argument "listes de tailles différentes")
+
+
+let matrix_product (m: int list list) (x: formula list) : formula list =
+  List.map
+    (fun ligne -> (ligne **: x) |> List.fold_left (+:) (Number 0))
+  m
+
+
 (* transforme juste l’équation, ne la résoud pas tout de suite *)
-(* AAAAAAAAAAARG cette fonction ne marche pas
- * contre-exemple :
- * pivot_gauss [[1; 1; 0],0;[1; 1; 1],1;[0;1;0],0] *)
 let pivot_gauss (coeffs: (int list * int) list) : (int list * int) list =
   let rec aux (c: (int list * int) list) (accu: (int list * int) list) =
     match c with
@@ -126,11 +172,14 @@ let pivot_gauss (coeffs: (int list * int) list) : (int list * int) list =
             aux new_list ((x, ax)::accu)
         | n::qy ->
             let coeff_x = List.hd x in
-            let new_y = (coeff_x ** y) -- (n ** x) in
-            let new_ay = coeff_x*ay - n*ax in
-            let new_list =
-              List.map (fun (l, a) -> (List.tl l, a)) ((new_y, new_ay)::q) in
-            aux (new_list) ((x, ax)::accu)
+            if coeff_x = 0 then
+              aux ((y, ay)::(x, ax)::q) accu
+            else
+              let new_y = (coeff_x ** y) -- (n ** x) in
+              let new_ay = coeff_x*ay - n*ax in
+              let new_list =
+                List.map (fun (l, a) -> (List.tl l, a)) ((new_y, new_ay)::q) in
+              aux (new_list) ((x, ax)::accu)
         end
   in
   (* on essaye d’avoir déjà un semblant de pivot *)
